@@ -32,6 +32,7 @@ class CoreTestsPlugin:
             from qgistester.tests import addTestModule
             addTestModule(testerplugin, 'Core Tests')
         except Exception as e:
+            raise
             pass
 
     def initGui(self):
