@@ -1,7 +1,25 @@
-'''
-Tests to ensure that a QGIS installation contains Processing dependencies
-and they are correctly configured by default
-'''
+# -*- coding: utf-8 -*-
+
+"""
+***************************************************************************
+    testerplugin.py
+    ---------------------
+    Date                 : May 2016
+    Copyright            : (C) 2016 by Boundless, http://boundlessgeo.com
+                         : (C) 2020 by QCooperative, https://www.qcooperative.net
+***************************************************************************
+*                                                                         *
+*   This program is free software; you can redistribute it and/or modify  *
+*   it under the terms of the GNU General Public License as published by  *
+*   the Free Software Foundation; either version 2 of the License, or     *
+*   (at your option) any later version.                                   *
+*                                                                         *
+***************************************************************************
+"""
+
+__author__ = 'Victor Olaya'
+__date__ = 'May 2016'
+__copyright__ = '(C) 2016 Boundless, http://boundlessgeo.com'
 
 import os
 import sys
@@ -18,6 +36,7 @@ from qgis.PyQt.QtNetwork import QSslCertificate
 testPath = os.path.dirname(__file__)
 
 TEST_URLS = "TEST_URLS"
+
 
 def _loadSpatialite():
     uri = QgsDataSourceUri()
@@ -93,7 +112,7 @@ def _modifyAndLoadWfs():
 
 def _loadWfsToBeEdited(name="testlayer"):
     valid = {}
-    url = os.getenv(TEST_URLS).split(",")[0] + + "/wfs"        
+    url = os.getenv(TEST_URLS).split(",")[0] + + "/wfs"
     url = url.strip() + "/wfs"
     uri = "%s?typename=usa:states&version=1.0.0&request=GetFeature&service=WFS&username=admin&password=geoserver" % url
     layer = QgsVectorLayer(uri, name, "WFS")
@@ -276,9 +295,9 @@ Simply click the *Ok* button to dismiss it.
     offlineTest.addStep("Click the *Toggle Editing* icon or select the 'Toggle Editing' menu item under Layer.",
                            isVerifyStep=True)
     offlineTest.addStep("Sync the project by selecting *Database > Offline editing > Synchronize*",
-                           isVerifyStep=True)    
+                           isVerifyStep=True)
     offlineTest.addStep("Verify that your changes were stored on the GeoServer. Compare the edited layer with the new one, and verify that they are identical.",
-                           prestep= lambda: _loadWfsToBeEdited("testlayer_afterediting"), isVerifyStep=True)    
+                           prestep= lambda: _loadWfsToBeEdited("testlayer_afterediting"), isVerifyStep=True)
 
     return [spatialiteTest, logTest, aboutTest, wcsTest, wfsTest, arcmapTest, arcfeatureTest, postgisTest, offlineTest]
 
