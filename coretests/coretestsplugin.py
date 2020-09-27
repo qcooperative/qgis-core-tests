@@ -38,4 +38,9 @@ class CoreTestsPlugin:
         pass
 
     def unload(self):
-        pass
+        try:
+            from coretests.tests import testerplugin
+            from qgistester.tests import removeTestModule
+            removeTestModule(testerplugin, 'Core Tests')
+        except:
+            pass
