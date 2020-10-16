@@ -24,6 +24,7 @@ __copyright__ = '(C) 2016 Boundless, http://boundlessgeo.com'
 import os
 import sys
 
+from qgis.core import QgsSettings
 from qgis.utils import iface
 
 
@@ -39,9 +40,41 @@ def functionalTests():
     testAdvancedSettings.addStep('Open QGIS Settings and change some values using Andanced Settings Editor and close dialog by pressing OK button.', prestep=lambda:_showOptions())
     testAdvancedSettings.addStep('Open QGIS Settings again. Check that previously changed settings have correct values.', prestep=lambda:_showOptions(), isVerifyStep=True)
 
-    return [testAdvancedSettings
+    # adding WMTS from Browser paner - #36264
+    testBrowserAddWmts = Test('Adding WMTS from Browser')
+    testBrowserAddWmts.setIssueUrl('https://github.com/qgis/QGIS/issues/36264')
+    testBrowserAddWmts.addStep('Create test WMTS connection.', function=lambda: _addWmtsConnection())
+    testBrowserAddWmts.addStep('Expand "WMS/WMTS" node in the Browser panel. Then expand "TesterPlugin" connection.')
+    testBrowserAddWmts.addStep('Try to add layer "112 Par satellite" from the Browser to QGIS canvas. Check that QGIS prompts for date and after setting a date layer added to canvas and visible.')
+    testBrowserAddWmts.setCleanup(lambda: _removeWmtsConnection())
+
+    return [testAdvancedSettings,
+            testBrowserAddWmts
            ]
 
 
 def _showOptions():
     iface.showOptionsDialog(None, 'mOptionsPageSettingsEditor')
+
+
+def _addWmtsConnection():
+    settings = QgsSettings()
+    key = 'qgis/connections-wms/TesterPlugin'
+
+    settings.setValue(key + '/url', 'http://wmts.geo.admin.ch/1.0.0/WMTSCapabilities.xml?lang=fr')
+    settings.setValue(key + '/dpiMode', 7)
+    settings.setValue(key + '/ignoreAxisOrientation', False)
+    settings.setValue(key + '/ignoreGetFeatureInfoURI', False)
+    settings.setValue(key + '/ignoreGetMapURI', False)
+    settings.setValue(key + '/ignoreReportedLayerExtents', False)
+    settings.setValue(key + '/invertAxisOrientation', False)
+    settings.setValue(key + '/referer', '')
+    settings.setValue(key + '/smoothPixmapTransform', False)
+
+    iface.browserModel().reload()
+
+def _removeWmtsConnection():
+  settings = QgsSettings()
+  settings.remove('qgis/connections-wms/TesterPlugin')
+  settings.remove('qgis/WMS/TesterPlugin')
+  iface.browserModel().reload()
