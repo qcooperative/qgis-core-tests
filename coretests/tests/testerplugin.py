@@ -37,7 +37,7 @@ def functionalTests():
     # advanced setting editing are reset after closing of options gui - #26327
     testAdvancedSettings = Test('Advanced settings editor saves changes')
     testAdvancedSettings.setIssueUrl('https://github.com/qgis/QGIS/issues/26327')
-    testAdvancedSettings.addStep('Open QGIS Settings and change some values using Andanced Settings Editor and close dialog by pressing OK button.', prestep=lambda:_showOptions())
+    testAdvancedSettings.addStep('Open QGIS Settings and change some values using Advanced Settings Editor and close dialog by pressing OK button.', prestep=lambda:_showOptions())
     testAdvancedSettings.addStep('Open QGIS Settings again. Check that previously changed settings have correct values.', prestep=lambda:_showOptions(), isVerifyStep=True)
 
     # adding WMTS from Browser paner - #36264
