@@ -24,10 +24,13 @@ __copyright__ = '(C) 2016 Boundless, http://boundlessgeo.com'
 import os
 import sys
 
-from qgis.core import QgsSettings, QgsApplication
+from qgis.core import QgsSettings, QgsApplication, QgsProject
 from qgis.utils import iface
 
 from processing.gui.BatchAlgorithmDialog import BatchAlgorithmDialog
+
+pluginPath = os.path.split(os.path.dirname(__file__))[0]
+dataPath = os.path.join(pluginPath, 'data')
 
 
 def functionalTests():
@@ -57,9 +60,20 @@ def functionalTests():
     testAddBatchRows.addStep('Check that every time green plus button in the dialog toolbar is pressed a new row added to the batch.', isVerifyStep=True)
     testAddBatchRows.addStep('Close dialog by pressing "Close" button.')
 
+    # filename prefix not shown when loading GPX or similar files - #37551
+    testGpxFilenamePrefix = Test('Filename prefix is not shown when adding layers from GPX')
+    testGpxFilenamePrefix.setIssueUrl('https://github.com/qgis/QGIS/issues/37551')
+    testGpxFilenamePrefix.addStep('Add GPX layer to QGIS. Ensure that all layers in the "Select Vector Layers to Add" dialog are selected and "Add layers to group" checkbox is checked. Press "OK" button', prestep=lambda: iface.addVectorLayer(os.path.join(dataPath, 'elev.gpx'),'elev','ogr'), busyCursor=False)
+    testGpxFilenamePrefix.addStep('Check that in the layer tree there is an "elev" group with 5 layers inside it and layer names are not prefixed with the "elev".', isVerifyStep=True)
+    testGpxFilenamePrefix.addStep('Remove group with layers from the project.', function=lambda: QgsProject.instance().clear())
+    testGpxFilenamePrefix.addStep('Add GPX layer to QGIS. Ensure that all layers in the "Select Vector Layers to Add" dialog are selected and "Add layers to group" checkbox is NOT checked. Press "OK" button', prestep=lambda: iface.addVectorLayer(os.path.join(dataPath, 'elev.gpx'),'elev','ogr'), busyCursor=False)
+    testGpxFilenamePrefix.addStep('Check that in the layer tree there are 5 layers and their layer names are prefixed with the "elev".', isVerifyStep=True)
+    testGpxFilenamePrefix.setCleanup(lambda: QgsProject.instance().clear())
+
     return [testAdvancedSettings,
             testBrowserAddWmts,
-            testAddBatchRows
+            testAddBatchRows,
+            testGpxFilenamePrefix
            ]
 
 
