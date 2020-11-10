@@ -24,8 +24,10 @@ __copyright__ = '(C) 2016 Boundless, http://boundlessgeo.com'
 import os
 import sys
 
-from qgis.core import QgsSettings
+from qgis.core import QgsSettings, QgsApplication
 from qgis.utils import iface
+
+from processing.gui.BatchAlgorithmDialog import BatchAlgorithmDialog
 
 
 def functionalTests():
@@ -48,8 +50,16 @@ def functionalTests():
     testBrowserAddWmts.addStep('Try to add layer "112 Par satellite" from the Browser to QGIS canvas. Check that QGIS prompts for date and after setting a date layer added to canvas and visible.')
     testBrowserAddWmts.setCleanup(lambda: _removeWmtsConnection())
 
+    # adding rows in the Processing batch interface - #39696
+    testAddBatchRows = Test('Adding new rows in Processing batch interface')
+    testAddBatchRows.setIssueUrl('https://github.com/qgis/QGIS/issues/39696')
+    testAddBatchRows.addStep('Start native "Buffer" algorithm in batch mode', function=lambda: _runProcessingBatch())
+    testAddBatchRows.addStep('Check that every time green plus button in the dialog toolbar is pressed a new row added to the batch.', isVerifyStep=True)
+    testAddBatchRows.addStep('Close dialog by pressing "Close" button.')
+
     return [testAdvancedSettings,
-            testBrowserAddWmts
+            testBrowserAddWmts,
+            testAddBatchRows
            ]
 
 
@@ -73,8 +83,16 @@ def _addWmtsConnection():
 
     iface.browserModel().reload()
 
+
 def _removeWmtsConnection():
   settings = QgsSettings()
   settings.remove('qgis/connections-wms/TesterPlugin')
   settings.remove('qgis/WMS/TesterPlugin')
   iface.browserModel().reload()
+
+
+def _runProcessingBatch():
+    alg = QgsApplication.processingRegistry().createAlgorithmById('native:buffer')
+    dlg = BatchAlgorithmDialog(alg.create(), parent=iface.mainWindow())
+    dlg.show()
+    dlg.exec_()
