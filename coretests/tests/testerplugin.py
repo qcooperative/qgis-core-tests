@@ -39,21 +39,21 @@ def functionalTests():
     # advanced setting editing are reset after closing of options gui - #26327
     testAdvancedSettings = Test('Advanced settings editor saves changes')
     testAdvancedSettings.setIssueUrl('https://github.com/qgis/QGIS/issues/26327')
-    testAdvancedSettings.addStep('Open QGIS Settings and change some values using Advanced Settings Editor and close dialog by pressing OK button.', prestep=lambda:_showOptions())
-    testAdvancedSettings.addStep('Open QGIS Settings again. Check that previously changed settings have correct values.', prestep=lambda:_showOptions(), isVerifyStep=True)
+    testAdvancedSettings.addStep('Open QGIS Settings and change some values using Advanced Settings Editor and close dialog by pressing OK button.', prestep=lambda:_showOptions(), busyCursor=False)
+    testAdvancedSettings.addStep('Open QGIS Settings again. Check that previously changed settings have correct values.', prestep=lambda:_showOptions(), isVerifyStep=True, busyCursor=False)
 
     # adding WMTS from Browser paner - #36264
     testBrowserAddWmts = Test('Adding WMTS from Browser')
     testBrowserAddWmts.setIssueUrl('https://github.com/qgis/QGIS/issues/36264')
     testBrowserAddWmts.addStep('Create test WMTS connection.', function=lambda: _addWmtsConnection())
     testBrowserAddWmts.addStep('Expand "WMS/WMTS" node in the Browser panel. Then expand "TesterPlugin" connection.')
-    testBrowserAddWmts.addStep('Try to add layer "112 Par satellite" from the Browser to QGIS canvas. Check that QGIS prompts for date and after setting a date layer added to canvas and visible.')
+    testBrowserAddWmts.addStep('Try to add layer "112 Par satellite" from the Browser to QGIS canvas. Check that QGIS prompts for date and after setting a date layer added to canvas and visible.', isVerifyStep=True)
     testBrowserAddWmts.setCleanup(lambda: _removeWmtsConnection())
 
     # adding rows in the Processing batch interface - #39696
     testAddBatchRows = Test('Adding new rows in Processing batch interface')
     testAddBatchRows.setIssueUrl('https://github.com/qgis/QGIS/issues/39696')
-    testAddBatchRows.addStep('Start native "Buffer" algorithm in batch mode', function=lambda: _runProcessingBatch())
+    testAddBatchRows.addStep('Start native "Buffer" algorithm in batch mode', function=lambda: _runProcessingBatch(), busyCursor=False)
     testAddBatchRows.addStep('Check that every time green plus button in the dialog toolbar is pressed a new row added to the batch.', isVerifyStep=True)
     testAddBatchRows.addStep('Close dialog by pressing "Close" button.')
 
