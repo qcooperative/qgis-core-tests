@@ -70,10 +70,21 @@ def functionalTests():
     testGpxFilenamePrefix.addStep('Check that in the layer tree there are 5 layers and their layer names are prefixed with the "elev".', isVerifyStep=True)
     testGpxFilenamePrefix.setCleanup(lambda: QgsProject.instance().clear())
 
+    # check Processing providers
+    testProcessingProviders = Test('Processing providers are functional')
+    testProcessingProviders.addStep('Open Processing toolbox from the "Processing -> Toolbox" menu')
+    testProcessingProviders.addStep('Verify that native QGIS tools groups are exist in the Processing toolbox.', isVerifyStep=True)
+    testProcessingProviders.addStep('Verify that the GDAL group is exist in the Processing toolbox and that it contains several sub-groups.', isVerifyStep=True)
+    testProcessingProviders.addStep('Verify that the GRASS group is exist in the Processing toolbox and that it contains several sub-groups.', isVerifyStep=True)
+    testProcessingProviders.addStep('Verify that the SAGA group is exist in the Processing toolbox and that it contains several sub-groups.', isVerifyStep=True)
+
     return [testAdvancedSettings,
             testBrowserAddWmts,
             testAddBatchRows,
-            testGpxFilenamePrefix
+            testGpxFilenamePrefix,
+
+            # generic tests not linked to any ticket
+            testProcessingProviders
            ]
 
 
