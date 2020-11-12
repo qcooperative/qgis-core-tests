@@ -56,7 +56,7 @@ def functionalTests():
     # adding rows in the Processing batch interface - #39696
     testAddBatchRows = Test('Adding new rows in Processing batch interface')
     testAddBatchRows.setIssueUrl('https://github.com/qgis/QGIS/issues/39696')
-    testAddBatchRows.addStep('Start native "Buffer" algorithm in batch mode', function=lambda: _runProcessingBatch(), busyCursor=False)
+    testAddBatchRows.addStep('Start native "Buffer" algorithm in batch mode', prestep=lambda: _runProcessingBatch(), busyCursor=False)
     testAddBatchRows.addStep('Check that every time green plus button in the dialog toolbar is pressed a new row added to the batch.', isVerifyStep=True)
     testAddBatchRows.addStep('Close dialog by pressing "Close" button.')
 
