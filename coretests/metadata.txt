@@ -1,7 +1,7 @@
 [general]
-name=QGIS tests
+name=QGIS core tests
 description=QGIS core tests for Tester plugin
-about=Tests for QGIS core meant to be run with the Tester plugin.
+about=Set of tests for QGIS core functionality meant to be run with the Tester plugin.
 category=Plugins
 version=0.2
 qgisMinimumVersion=3.0
