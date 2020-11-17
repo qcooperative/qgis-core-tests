@@ -115,6 +115,8 @@ def _removeWmtsConnection():
   settings.remove('qgis/WMS/TesterPlugin')
   iface.browserModel().reload()
 
+  QgsProject.instance().clear()
+
 
 def _runProcessingBatch():
     alg = QgsApplication.processingRegistry().createAlgorithmById('native:buffer')
