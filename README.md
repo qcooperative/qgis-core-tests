@@ -1,3 +1,3 @@
 # QGIS core tests
 
-QGIS core tests meant to be used with the Tester plugin.
+Set of QGIS core tests meant to be used with the Tester plugin.

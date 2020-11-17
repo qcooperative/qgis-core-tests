@@ -13,4 +13,4 @@ clean:
 	rm -f $(NAME).zip
 
 package: clean
-	zip -9 -r $(NAME).zip $(NAME) -x $(NAME)/manualtests/\* $(NAME)/unittests/\*
+	zip -9 -r $(NAME).zip $(NAME)
