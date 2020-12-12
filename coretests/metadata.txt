@@ -3,7 +3,7 @@ name=QGIS core tests
 description=QGIS core tests for Tester plugin
 about=Set of tests for QGIS core functionality meant to be run with the Tester plugin.
 category=Plugins
-version=0.2
+version=0.3
 qgisMinimumVersion=3.0
 
 author=QCooperative, Victor Olaya (Boundless)
