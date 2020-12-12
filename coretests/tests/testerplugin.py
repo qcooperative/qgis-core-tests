@@ -40,13 +40,13 @@ def functionalTests():
         return []
 
     # advanced setting editing are reset after closing of options gui - #26327
-    testAdvancedSettings = Test('Advanced settings editor saves changes')
+    testAdvancedSettings = Test('Advanced settings editor saves changes', category='Regression tests')
     testAdvancedSettings.setIssueUrl('https://github.com/qgis/QGIS/issues/26327')
     testAdvancedSettings.addStep('Open QGIS Settings and change some values using Advanced Settings Editor and close dialog by pressing OK button.', prestep=lambda:_showOptions(), busyCursor=False)
     testAdvancedSettings.addStep('Open QGIS Settings again. Check that previously changed settings have correct values.', prestep=lambda:_showOptions(), isVerifyStep=True, busyCursor=False)
 
     # adding WMTS from Browser paner - #36264
-    testBrowserAddWmts = Test('Adding WMTS from Browser')
+    testBrowserAddWmts = Test('Adding WMTS from Browser', category='Regression tests')
     testBrowserAddWmts.setIssueUrl('https://github.com/qgis/QGIS/issues/36264')
     testBrowserAddWmts.addStep('Create test WMTS connection.', function=lambda: _addWmtsConnection())
     testBrowserAddWmts.addStep('Expand "WMS/WMTS" node in the Browser panel. Then expand "TesterPlugin" connection.')
@@ -54,14 +54,14 @@ def functionalTests():
     testBrowserAddWmts.setCleanup(lambda: _removeWmtsConnection())
 
     # adding rows in the Processing batch interface - #39696
-    testAddBatchRows = Test('Adding new rows in Processing batch interface')
+    testAddBatchRows = Test('Adding new rows in Processing batch interface', category='Regression tests')
     testAddBatchRows.setIssueUrl('https://github.com/qgis/QGIS/issues/39696')
     testAddBatchRows.addStep('Start native "Buffer" algorithm in batch mode', prestep=lambda: _runProcessingBatch(), busyCursor=False)
     testAddBatchRows.addStep('Check that every time green plus button in the dialog toolbar is pressed a new row added to the batch.', isVerifyStep=True)
     testAddBatchRows.addStep('Close dialog by pressing "Close" button.')
 
     # filename prefix not shown when loading GPX or similar files - #37551
-    testGpxFilenamePrefix = Test('Filename prefix is not shown when adding layers from GPX')
+    testGpxFilenamePrefix = Test('Filename prefix is not shown when adding layers from GPX', category='Regression tests')
     testGpxFilenamePrefix.setIssueUrl('https://github.com/qgis/QGIS/issues/37551')
     testGpxFilenamePrefix.addStep('Add GPX layer to QGIS. Ensure that all layers in the "Select Vector Layers to Add" dialog are selected and "Add layers to group" checkbox is checked. Press "OK" button', prestep=lambda: iface.addVectorLayer(os.path.join(dataPath, 'elev.gpx'),'elev','ogr'), busyCursor=False)
     testGpxFilenamePrefix.addStep('Check that in the layer tree there is an "elev" group with 5 layers inside it and layer names are not prefixed with the "elev".', isVerifyStep=True)
