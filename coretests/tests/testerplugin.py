@@ -71,7 +71,7 @@ def functionalTests():
     testGpxFilenamePrefix.setCleanup(lambda: QgsProject.instance().clear())
 
     # check Processing providers
-    testProcessingProviders = Test('Processing providers are functional')
+    testProcessingProviders = Test('Processing providers are functional', category='Installation Smoke tests')
     testProcessingProviders.addStep('Open Processing toolbox from the "Processing -> Toolbox" menu')
     testProcessingProviders.addStep('Verify that native QGIS tools groups are exist in the Processing toolbox.', isVerifyStep=True)
     testProcessingProviders.addStep('Verify that the GDAL group is exist in the Processing toolbox and that it contains several sub-groups.', isVerifyStep=True)
